@@ -1,0 +1,39 @@
+.form {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 952px;
+  width: 100%;
+}
+
+.input {
+  min-width: 205px;
+}
+
+.buttonup {
+  min-width: 175px;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+.buttondown {
+  min-width: 362px;
+}
+
+.form:last-of-type {
+  margin-top: 12px;
+}
+
+.container {
+  margin: 120px auto 0;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.list__el {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
