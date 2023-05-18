@@ -76,6 +76,7 @@ export const QueuePage: React.FC = () => {
           >
           </Input>
           <Button
+            data-testid= 'add'
             onClick={addHandler}
             text={'Добавить'}
             type="submit"
@@ -84,6 +85,7 @@ export const QueuePage: React.FC = () => {
             isLoader={loaderAdd}
           />
           <Button
+            data-testid= 'remove'
             onClick={removeHandler}
             text={'Удалить'}
             type="submit"
@@ -93,6 +95,7 @@ export const QueuePage: React.FC = () => {
           />
         </div>
         <Button
+        data-testid= 'clear'
           onClick={clearHandler}
           text={'Очистить'}
           type="submit"

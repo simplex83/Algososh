@@ -1,0 +1,151 @@
+import { circle_content, circle, defaultColor, changingColor, modifiedColor } from '../../../src/constants/element-captions';
+
+describe('list-test', function () {
+    it('disabled button if empty input', () => {
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите значение"]').should('have.value', '');
+        cy.get('button[data-testid= "add_in_head"]').should('have.disabled', true);
+        cy.get('button[data-testid= "add_in_tail"]').should('have.disabled', true);
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите индекс"]').should('have.value', '');
+        cy.get('button[data-testid= "add_by_index"]').should('have.disabled', true);
+        cy.get('button[data-testid= "remove_by_index"]').should('have.disabled', true)
+    });
+    it('default list works correctly', () => {
+        cy.visit('http://localhost:3000/list').get(circle).should('have.length', 4);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(3).contains('tail');
+
+    });
+    it('adding in head works correctly', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите значение"]').type('1').should('have.value', '1');
+        cy.get('button[data-testid= "add_in_head"]').click();
+        cy.tick(499);
+        cy.get(circle_content).eq(0).contains('1').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', modifiedColor).contains('1');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(4).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(4).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+    });
+    it('adding in tail works correctly', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите значение"]').type('1').should('have.value', '1');
+        cy.get('button[data-testid= "add_in_tail"]').click();
+        cy.tick(499);
+        cy.get(circle_content).eq(4).contains('1').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle).eq(4).should('have.css', 'border-color', modifiedColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle).eq(4).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+    })
+    it('adding by index works correctly', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите индекс"]').type('2').should('have.value', '2');
+        cy.get('input[placeholder="Введите значение"]').type('2').should('have.value', '2');
+        cy.get('button[data-testid= "add_by_index"]').click();
+        cy.tick(499);
+        cy.get(circle_content).eq(0).contains('2').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle_content).eq(1).contains('2').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle_content).eq(2).contains('2').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', modifiedColor).contains('2');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(4).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+        cy.tick(499);
+        cy.get(circle).should('have.length', 5);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('2');
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(4).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(4).contains('tail');
+    });
+    it('removal from head works correctly', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('button[data-testid= "remove_from_head"]').click();
+        cy.tick(499);
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).should('have.text', '');
+        cy.get(circle_content).eq(1).contains('0').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 3);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(2).contains('tail');
+    });
+    it('removal from tail works correctly', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('button[data-testid= "remove_from_tail"]').click();
+        cy.tick(499);
+        cy.get(circle).eq(3).should('have.css', 'border-color', defaultColor).should('have.text', '');
+        cy.get(circle_content).eq(3).contains('1').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 3);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('8');
+        cy.get(circle_content).eq(2).contains('tail');
+    });
+    it('removal by index works', () => {
+        cy.clock();
+        cy.visit('http://localhost:3000/list').get('input[placeholder="Введите индекс"]').type('2').should('have.value', '2');
+        cy.get('button[data-testid= "remove_by_index"]').click();
+        cy.tick(499);
+        cy.get(circle).eq(0).contains('0').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).eq(1).contains('34').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).eq(2).contains('8').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).should('have.text', '');
+        cy.get(circle_content).eq(2).contains('8').parent().should('have.css', 'border-color', changingColor);
+        cy.tick(499);
+        cy.get(circle).should('have.length', 3);
+        cy.get(circle_content).eq(0).contains('head');
+        cy.get(circle).eq(0).should('have.css', 'border-color', defaultColor).contains('0');
+        cy.get(circle).eq(1).should('have.css', 'border-color', defaultColor).contains('34');
+        cy.get(circle).eq(2).should('have.css', 'border-color', defaultColor).contains('1');
+        cy.get(circle_content).eq(2).contains('tail');
+    })
+});

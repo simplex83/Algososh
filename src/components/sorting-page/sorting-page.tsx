@@ -7,7 +7,7 @@ import { RadioInput } from "../ui/radio-input/radio-input";
 import { ElementStates } from "../../types/element-states";
 import { ISortItem } from "../../types/sorting";
 import { Column } from "../ui/column/column";
-import { SHORT_DELAY_IN_MS } from "../../constants/delays";
+import { bubbleSort, selectionSort } from "./utils";
 
 export const SortingPage: React.FC = () => {
   const [typeSort, setTypeSort] = useState<string>("selection");
@@ -36,98 +36,13 @@ export const SortingPage: React.FC = () => {
     }
     return arr
   }
-  
+
   useEffect(() => {
     const sortArr = randomArr();
     setStateSort([...sortArr]);
     // eslint-disable-next-line
   }, []);
 
-  // поменять местами
-  const swap = (arr: ISortItem[], i: number) => {
-    let temp = arr[i];
-    arr[i] = arr[i + 1];
-    arr[i + 1] = temp;
-  };
-  //сортировка пузырьком
-  const bubbleSort = async (direction: string) => {
-    setDisableState(true)
-    if (direction === "asc") {
-      setLoaderAsc(true)
-    } else { setLoaderDes(true) }
-    const arr = stateSort;
-    for (let j = arr.length - 1; j > 0; j--) {
-      for (let i = 0; i < j; i++) {
-        arr[i].state = ElementStates.Changing;
-        arr[i + 1].state = ElementStates.Changing;
-        setStateSort([...arr])
-        if (direction === "asc") {
-          if (arr[i].el > arr[i + 1].el) {
-            swap(arr, i)
-          }
-        } else if (direction === "des") {
-          if (arr[i].el < arr[i + 1].el) {
-            swap(arr, i)
-          }
-        }
-        await new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
-        arr[i].state = ElementStates.Default;
-        arr[i + 1].state = ElementStates.Default;
-      }
-      arr[j].state = ElementStates.Modified;
-      setStateSort([...arr])
-      await new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
-
-      arr[0].state = ElementStates.Modified;
-      setStateSort([...arr])
-    }
-    if (direction === "asc") {
-      setLoaderAsc(false)
-    } else { setLoaderDes(false) }
-    setDisableState(false)
-    return arr
-  }
-  // сортировка выбором
-  const selectionSort = async (direction: string) => {
-    setDisableState(true)
-    if (direction === "asc") {
-      setLoaderAsc(true)
-    } else { setLoaderDes(true) }
-    const arr = stateSort;
-    for (let i = 0, l = arr.length, k = l - 1; i < k; i++) {
-      let indexMin = i;
-      arr[indexMin].state = ElementStates.Changing;
-      for (let j = i + 1; j < l; j++) {
-        arr[j].state = ElementStates.Changing;
-        setStateSort([...arr])
-        if (direction === "asc") {
-          if (arr[indexMin].el > arr[j].el) {
-            indexMin = j;
-          }
-        } else {
-          if (arr[indexMin].el < arr[j].el) {
-            indexMin = j;
-          }
-        }
-        await new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
-        arr[j].state = ElementStates.Default;
-        setStateSort([...arr])
-      }
-      if (indexMin !== i) {
-        [arr[i], arr[indexMin]] = [arr[indexMin], arr[i]];
-      }
-      arr[i].state = ElementStates.Modified;
-      setStateSort([...arr])
-      await new Promise((resolve) => setTimeout(resolve, SHORT_DELAY_IN_MS));
-    }
-    arr[arr.length - 1].state = ElementStates.Modified;
-    setStateSort([...arr])
-    if (direction === "asc") {
-      setLoaderAsc(false)
-    } else { setLoaderDes(false) }
-    setDisableState(false)
-    return arr
-  }
   //хендлер для получения массива
   const randomHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -139,11 +54,28 @@ export const SortingPage: React.FC = () => {
     }, 500)
   }
   //хендлер для сортировки
-  const sortHandler = (direction: string) => {
+  const sortHandler = async(direction: string) => {
     if (typeSort === "bubble") {
-      bubbleSort(direction);
+      setDisableState(true)
+      if (direction === "asc") {
+        setLoaderAsc(true)
+      } else { setLoaderDes(true) }
+      await bubbleSort(direction, stateSort, setStateSort);
+      if (direction === "asc") {
+        setLoaderAsc(false)
+      } else { setLoaderDes(false) }
+      setDisableState(false)
+
     } else {
-      selectionSort(direction)
+      setDisableState(true)
+    if (direction === "asc") {
+      setLoaderAsc(true)
+    } else { setLoaderDes(true) }
+       await selectionSort(direction, stateSort, setStateSort)
+       if (direction === "asc") {
+        setLoaderAsc(false)
+      } else { setLoaderDes(false) }
+      setDisableState(false)
     }
   }
   return (

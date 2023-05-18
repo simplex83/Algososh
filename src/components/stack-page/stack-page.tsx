@@ -42,12 +42,15 @@ export const StackPage: React.FC = () => {
   const removeHandler = (e: FormEvent) => {
     e.preventDefault();
     setLoaderRemove(true);
-    stack.pop();
+    
     setTimeout(() => {
       setColor(ElementStates.Changing);
       setStateStack([...stack.getElements()])
     }, SHORT_DELAY_IN_MS);
+   
     setTimeout(() => {
+      stack.pop();
+      setStateStack([...stack.getElements()])
       setColor(ElementStates.Default);
       setLoaderRemove(false);
     }, DELAY_IN_MS)
@@ -76,6 +79,7 @@ export const StackPage: React.FC = () => {
           >
           </Input>
           <Button
+            data-testid= 'add'
             onClick={addHandler}
             text={'Добавить'}
             type="submit"
@@ -84,6 +88,7 @@ export const StackPage: React.FC = () => {
             isLoader={loaderAdd}
           />
           <Button
+            data-testid= 'remove'
             onClick={removeHandler}
             text={'Удалить'}
             type="submit"
@@ -93,6 +98,7 @@ export const StackPage: React.FC = () => {
           />
         </div>
         <Button
+        data-testid= 'clear'
           onClick={clearHandler}
           text={'Очистить'}
           type="submit"

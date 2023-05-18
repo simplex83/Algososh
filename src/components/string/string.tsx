@@ -76,6 +76,7 @@ export const StringComponent: React.FC = () => {
       <form className={styles.container}>
         <div className={styles.input}>
           <Input
+            data-testid ="input"
             type="text"
             maxLength={11}
             max={11}
@@ -86,6 +87,7 @@ export const StringComponent: React.FC = () => {
           </Input>
         </div>
         <Button
+          data-testid ="button"
           onClick={stringHandler}
           text={'Развернуть'}
           type="submit"
@@ -98,7 +100,7 @@ export const StringComponent: React.FC = () => {
       <section className={styles.numcontainer}>
         {stateOutput.map((item, index) => {
           return (
-            <Circle state={item.state} letter={item.letter} key={index} />
+            <Circle data-testid ="circle" state={item.state} letter={item.letter} key={index} />
           );
         })}
       </section>

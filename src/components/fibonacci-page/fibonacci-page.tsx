@@ -35,7 +35,6 @@ export const FibonacciPage: React.FC = () => {
     e.preventDefault();
     let n: number = Number(inputValue);
     const arrFib: number[] = fibonacci(n);
-    console.log(arrFib)
     const arrOutput: number[] = [];
     setLoader(true);
     for (let i = 0; i < arrFib.length; i++) {

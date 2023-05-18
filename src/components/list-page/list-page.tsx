@@ -195,9 +195,10 @@ export const ListPage: React.FC = () => {
           placeholder={'Введите значение'}
           extraClass={styles.input}
           onChange={onChange}
-          value={inputValue}
+          value={inputValue || ""}
         />
         <Button
+          data-testid= 'add_in_head'
           text={"Добавить в head"}
           extraClass={styles.buttonup}
           onClick={() => insertAtHead()}
@@ -206,6 +207,7 @@ export const ListPage: React.FC = () => {
 
         />
         <Button
+          data-testid= 'add_in_tail'
           text={"Добавить в tail"}
           extraClass={styles.buttonup}
           onClick={() => insertAtTail()}
@@ -213,6 +215,7 @@ export const ListPage: React.FC = () => {
           disabled={inputValue === '' || loading() || listState.length === 0}
         />
         <Button
+        data-testid= 'remove_from_head'
           text={"Удалить из head"}
           extraClass={styles.buttonup}
           onClick={() => deleteHead()}
@@ -220,6 +223,7 @@ export const ListPage: React.FC = () => {
           disabled={loading() || listState.length === 0}
         />
         <Button
+        data-testid= 'remove_from_tail'
           text={"Удалить из tail"}
           extraClass={styles.buttonup}
           onClick={() => deleteTail()}
@@ -238,6 +242,7 @@ export const ListPage: React.FC = () => {
           value={inputValueIndex}
         />
         <Button
+          data-testid= 'add_by_index'
           text={"Добавить по индексу"}
           extraClass={styles.buttondown}
           onClick={insertAtIndex}
@@ -245,6 +250,7 @@ export const ListPage: React.FC = () => {
           isLoader={isLoading.addAtIndex}
         />
         <Button
+          data-testid= 'remove_by_index'
           text={"Удалить по индексу"}
           extraClass={styles.buttondown}
           onClick={deleteAtIndex}
